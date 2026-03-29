@@ -1,79 +1,80 @@
 👕 Fashion Image Classifier using CNN
-📌 About
+📌 Overview
 
-This project is a deep learning-based image classifier that uses a custom Convolutional Neural Network (CNN) trained on the Fashion-MNIST dataset to classify clothing images.
+This project implements a Convolutional Neural Network (CNN) to classify images of clothing into different categories.
+It is trained on the Fashion-MNIST dataset, which contains grayscale images of various fashion products.
 
-The model can accurately recognize different types of fashion items from grayscale images.
+The goal is to build an accurate and efficient model capable of recognizing clothing items from images.
 
 🧠 Supported Classes
-
-The model classifies images into the following categories:
-
-👕 T-shirt/Top
-👖 Trouser
-🧥 Pullover
-👗 Dress
-🧥 Coat
-👡 Sandal
-👔 Shirt
-👟 Sneaker
-👜 Bag
-👢 Ankle Boot
+Class	Description
+👕 T-shirt/Top	Casual upper wear
+👖 Trouser	Pants
+🧥 Pullover	Sweaters
+👗 Dress	Dresses
+🧥 Coat	Outerwear
+👡 Sandal	Open footwear
+👔 Shirt	Formal shirts
+👟 Sneaker	Sports shoes
+👜 Bag	Handbags
+👢 Ankle Boot	Boots
 🏗️ Model Architecture
 
-The CNN model is designed with the following components:
+The CNN model is designed to extract features efficiently and generalize well:
 
-🔹 3 Convolutional Blocks + Batch Normalization
-🔹 Data Augmentation for better generalization
-🔹 Global Average Pooling
+🔹 3 Convolutional Blocks with Batch Normalization
+🔹 Data Augmentation to improve robustness
+🔹 Global Average Pooling instead of Flatten
 🔹 Dropout Regularization to prevent overfitting
 ⚙️ Tech Stack
-Python 🐍
-TensorFlow / Keras
-NumPy
-Matplotlib
-🚀 Features
-
-✔️ Custom CNN model for image classification
-✔️ Training and evaluation pipeline
-✔️ Confusion matrix visualization
-✔️ Training history plots
-✔️ Prediction on custom images
-
 📂 Project Structure
 cnn-image-classifier/
-│── train.py
-│── model.py
-│── predict.py
-│── utils.py
-│── app.py
-│── requirements.txt
-│── README.md
+│── train.py              # Model training script
+│── model.py              # CNN architecture
+│── predict.py            # Prediction script
+│── utils.py              # Helper functions
+│── app.py                # (Optional) App interface
+│── requirements.txt      # Dependencies
+│── README.md             # Project documentation
 │
 └── results/
     ├── confusion_matrix.png
     ├── training_history.png
     └── sample_predictions.png
-▶️ How to Run
-1️⃣ Install dependencies
+🚀 Getting Started
+1️⃣ Clone the Repository
+git clone https://github.com/anand7771-dev/CNN-IMAGE-CLASSIFIER.git
+cd CNN-IMAGE-CLASSIFIER
+2️⃣ Install Dependencies
 pip install -r requirements.txt
-2️⃣ Train the model
+3️⃣ Train the Model
 python train.py
-3️⃣ Run predictions
+4️⃣ Run Predictions
 python predict.py
 📊 Results
-📈 Model achieves good accuracy on Fashion-MNIST
-📊 Confusion matrix available in /results
-🖼️ Sample predictions visualized
-💡 Future Improvements
-Use Transfer Learning (ResNet / EfficientNet)
-Deploy using Streamlit Web App
-Improve accuracy with hyperparameter tuning
+
+The model performs well on the Fashion-MNIST dataset:
+
+📈 High training & validation accuracy
+📊 Confusion matrix for performance analysis
+🖼️ Visualization of predictions
+💡 Key Highlights
+
+✔️ End-to-end deep learning pipeline
+✔️ Clean and modular code structure
+✔️ Visualization of results
+✔️ Beginner-friendly and extensible
+
+🔮 Future Improvements
+🚀 Implement Transfer Learning (ResNet, EfficientNet)
+🌐 Deploy as a Streamlit Web App
+⚡ Optimize model performance
+📱 Real-time image classification
 🙌 Author
 
 Anand Dev
-🔗 https://github.com/anand7771-dev
+🔗 GitHub: https://github.com/anand7771-dev
 
 ⭐ Support
 
-If you like this project, consider giving it a ⭐ on GitHub!
+If you found this project helpful, consider giving it a ⭐ on GitHub!
