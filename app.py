@@ -14,8 +14,8 @@ import os
 import urllib.request
 
 # ─── Configuration ───────────────────────────────────────────────
-MODEL_PATH = "fashion_mnist_cnn_model.h5"
-MODEL_URL = "https://huggingface.co/ananddev7771/CNN-IMAGE-CLASSIFIER/resolve/main/fashion_mnist_cnn_model.h5"
+MODEL_PATH = "fashion_mnist_compatible.h5"
+MODEL_URL = "https://huggingface.co/ananddev7771/CNN-IMAGE-CLASSIFIER/resolve/main/fashion_mnist_compatible.h5"
 
 CLASS_NAMES = [
     'T-shirt/Top 👕', 'Trouser 👖', 'Pullover 🧥', 'Dress 👗', 'Coat 🧥',
