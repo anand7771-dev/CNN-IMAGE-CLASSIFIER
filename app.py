@@ -11,9 +11,12 @@ import plotly.graph_objects as go
 from tensorflow.keras.models import load_model
 from PIL import Image
 import os
+import urllib.request
 
 # ─── Configuration ───────────────────────────────────────────────
 MODEL_PATH = "fashion_mnist_cnn_model.keras"
+MODEL_URL = "https://huggingface.co/ananddev7771/CNN-IMAGE-CLASSIFIER/resolve/main/fashion_mnist_cnn_model.keras"
+
 CLASS_NAMES = [
     'T-shirt/Top 👕', 'Trouser 👖', 'Pullover 🧥', 'Dress 👗', 'Coat 🧥',
     'Sandal 👡', 'Shirt 👔', 'Sneaker 👟', 'Bag 👜', 'Ankle Boot 👢'
@@ -59,9 +62,19 @@ st.markdown("""
 
 @st.cache_resource
 def load_trained_model():
-    if os.path.exists(MODEL_PATH):
+    """Load model from disk, downloading from Hugging Face if not present."""
+    if not os.path.exists(MODEL_PATH):
+        with st.spinner("⬇️ Downloading model for the first time... please wait."):
+            try:
+                urllib.request.urlretrieve(MODEL_URL, MODEL_PATH)
+            except Exception as e:
+                st.error(f"❌ Failed to download model: {e}")
+                return None
+    try:
         return load_model(MODEL_PATH)
-    return None
+    except Exception as e:
+        st.error(f"❌ Failed to load model: {e}")
+        return None
 
 
 def preprocess_image(uploaded_file):
@@ -153,7 +166,8 @@ def main():
 
     model = load_trained_model()
     if model is None:
-        st.error("⚠️ Model not found! Run `python train.py` first.")
+        st.error("⚠️ Model could not be loaded. Please check your MODEL_URL or re-upload the model.")
+        st.info("💡 Make sure you have replaced `<your-username>` and `<repo-name>` in MODEL_URL inside app.py.")
         return
 
     col1, col2 = st.columns([1, 1])
