@@ -14,8 +14,8 @@ import os
 import urllib.request
 
 # ─── Configuration ───────────────────────────────────────────────
-MODEL_PATH = "fashion_mnist_cnn_model.keras"
-MODEL_URL = "https://huggingface.co/ananddev7771/CNN-IMAGE-CLASSIFIER/resolve/main/fashion_mnist_cnn_model.keras"
+MODEL_PATH = "fashion_mnist_cnn_model_v2.keras"
+MODEL_URL = "https://huggingface.co/ananddev7771/CNN-IMAGE-CLASSIFIER/resolve/main/fashion_mnist_cnn_model_v2.keras"
 
 CLASS_NAMES = [
     'T-shirt/Top 👕', 'Trouser 👖', 'Pullover 🧥', 'Dress 👗', 'Coat 🧥',
