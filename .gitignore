@@ -1,15 +1,23 @@
-# Model files (too large for git)
+# Model files (never push these to git)
 *.keras
 *.h5
 
-# Python
+# Python cache
 __pycache__/
 *.pyc
 *.pyo
+*.pyd
 
-# Virtual environment
+# Virtual environments
 venv/
 env/
+.venv/
+
+# Distribution / build
+.dist/
+dist/
+build/
+*.egg-info/
 
 # IDE
 .vscode/
@@ -18,3 +26,6 @@ env/
 # OS
 .DS_Store
 Thumbs.db
+
+# Results / outputs
+results/
