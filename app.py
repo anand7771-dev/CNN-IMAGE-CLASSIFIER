@@ -8,14 +8,14 @@ predictions from the trained CNN model.
 import streamlit as st
 import numpy as np
 import plotly.graph_objects as go
-from tensorflow.keras.models import load_model
+# Model architecture is built from code; weights loaded separately
 from PIL import Image
 import os
 import urllib.request
 
 # ─── Configuration ───────────────────────────────────────────────
-MODEL_PATH = "fashion_mnist_compatible.h5"
-MODEL_URL = "https://huggingface.co/ananddev7771/CNN-IMAGE-CLASSIFIER/resolve/main/fashion_mnist_compatible.h5"
+MODEL_PATH = "fashion_mnist_weights.npz"
+MODEL_URL = "https://huggingface.co/ananddev7771/CNN-IMAGE-CLASSIFIER/resolve/main/fashion_mnist_weights.npz"
 
 CLASS_NAMES = [
     'T-shirt/Top 👕', 'Trouser 👖', 'Pullover 🧥', 'Dress 👗', 'Coat 🧥',
@@ -60,6 +60,52 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 
+def _build_model_architecture():
+    """Rebuild the exact CNN architecture from code (no deserialization needed)."""
+    from tensorflow.keras import layers, models
+    model = models.Sequential(name="FashionMNIST_CNN")
+
+    # Block 1
+    model.add(layers.Conv2D(32, (3, 3), padding='same', input_shape=(28, 28, 1), name='conv1a'))
+    model.add(layers.BatchNormalization(name='bn1a'))
+    model.add(layers.Activation('relu', name='relu1a'))
+    model.add(layers.Conv2D(32, (3, 3), padding='same', name='conv1b'))
+    model.add(layers.BatchNormalization(name='bn1b'))
+    model.add(layers.Activation('relu', name='relu1b'))
+    model.add(layers.MaxPooling2D(pool_size=(2, 2), name='pool1'))
+    model.add(layers.Dropout(0.25, name='drop1'))
+
+    # Block 2
+    model.add(layers.Conv2D(64, (3, 3), padding='same', name='conv2a'))
+    model.add(layers.BatchNormalization(name='bn2a'))
+    model.add(layers.Activation('relu', name='relu2a'))
+    model.add(layers.Conv2D(64, (3, 3), padding='same', name='conv2b'))
+    model.add(layers.BatchNormalization(name='bn2b'))
+    model.add(layers.Activation('relu', name='relu2b'))
+    model.add(layers.MaxPooling2D(pool_size=(2, 2), name='pool2'))
+    model.add(layers.Dropout(0.30, name='drop2'))
+
+    # Block 3
+    model.add(layers.Conv2D(128, (3, 3), padding='same', name='conv3a'))
+    model.add(layers.BatchNormalization(name='bn3a'))
+    model.add(layers.Activation('relu', name='relu3a'))
+    model.add(layers.Conv2D(128, (3, 3), padding='same', name='conv3b'))
+    model.add(layers.BatchNormalization(name='bn3b'))
+    model.add(layers.Activation('relu', name='relu3b'))
+    model.add(layers.MaxPooling2D(pool_size=(2, 2), name='pool3'))
+    model.add(layers.Dropout(0.40, name='drop3'))
+
+    # Classifier Head
+    model.add(layers.GlobalAveragePooling2D(name='global_avg_pool'))
+    model.add(layers.Dense(256, name='fc1'))
+    model.add(layers.BatchNormalization(name='bn_fc1'))
+    model.add(layers.Activation('relu', name='relu_fc1'))
+    model.add(layers.Dropout(0.5, name='drop_fc'))
+    model.add(layers.Dense(10, activation='softmax', name='output'))
+
+    return model
+
+
 @st.cache_resource
 def load_trained_model():
     if not os.path.exists(MODEL_PATH):
@@ -70,15 +116,17 @@ def load_trained_model():
                 st.error(f"❌ Failed to download model: {e}")
                 return None
     try:
-        return load_model(MODEL_PATH, compile=False)  # ← add compile=False
+        # Build architecture from code, then load weights from numpy arrays
+        # This is 100% cross-version compatible (no Keras serialization involved)
+        model = _build_model_architecture()
+        model.build((None, 28, 28, 1))
+        data = np.load(MODEL_PATH)
+        weights = [data[f"w{i}"] for i in range(len(data.files))]
+        model.set_weights(weights)
+        return model
     except Exception as e:
-        # Try legacy keras loading
-        try:
-            import keras
-            return keras.saving.load_model(MODEL_PATH, compile=False)
-        except Exception as e2:
-            st.error(f"❌ Failed to load model: {e2}")
-            return None
+        st.error(f"❌ Failed to load model: {e}")
+        return None
 
 def preprocess_image(uploaded_file):
     """
