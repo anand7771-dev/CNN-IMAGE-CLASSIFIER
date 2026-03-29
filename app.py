@@ -62,20 +62,23 @@ st.markdown("""
 
 @st.cache_resource
 def load_trained_model():
-    """Load model from disk, downloading from Hugging Face if not present."""
     if not os.path.exists(MODEL_PATH):
-        with st.spinner("⬇️ Downloading model for the first time... please wait."):
+        with st.spinner("⬇️ Downloading model..."):
             try:
                 urllib.request.urlretrieve(MODEL_URL, MODEL_PATH)
             except Exception as e:
                 st.error(f"❌ Failed to download model: {e}")
                 return None
     try:
-        return load_model(MODEL_PATH)
+        return load_model(MODEL_PATH, compile=False)  # ← add compile=False
     except Exception as e:
-        st.error(f"❌ Failed to load model: {e}")
-        return None
-
+        # Try legacy keras loading
+        try:
+            import keras
+            return keras.saving.load_model(MODEL_PATH, compile=False)
+        except Exception as e2:
+            st.error(f"❌ Failed to load model: {e2}")
+            return None
 
 def preprocess_image(uploaded_file):
     """
