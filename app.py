@@ -1,4 +1,3 @@
-```python
 """
 Streamlit Web App for Fashion-MNIST CNN Image Classifier (Demo Version)
 =======================================================================
